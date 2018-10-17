@@ -77,9 +77,10 @@ const playWord = function(req, res) {
 };
 
 const resetGame = function(req, res) {
-  //
-  // TODO
-  //
+  const {
+    playerName,
+  } = req.body;
+  gameInstances.set(playerName, new Game());
   console.log('TODO: Reset a game identified by playerName');
 };
 
