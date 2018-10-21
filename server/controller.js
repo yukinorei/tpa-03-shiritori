@@ -35,7 +35,6 @@ const playWord = function(req, res) {
     inputWord,
     playerName,
   } = req.body;
-
   if (!playerName) {
     sendInvalidPlayerNameError(res);
     return;
@@ -77,10 +76,19 @@ const playWord = function(req, res) {
 };
 
 const resetGame = function(req, res) {
-  const {
-    playerName,
-  } = req.body;
+  const playerInfoObj = req.body;
+  const { playerName } = playerInfoObj;
+  if (!playerName) {
+    const reset = { success: false };
+    return res.json(reset);
+  }
+  if ((typeof playerName !== 'string') || typeof inputWord !== 'string') {
+    const reset = { success: false };
+    return res.json(reset);
+  }
   gameInstances.set(playerName, new Game());
+  const reset = { success: true };
+  res.json(reset);
   console.log('TODO: Reset a game identified by playerName');
 };
 

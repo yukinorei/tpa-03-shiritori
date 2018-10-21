@@ -32,6 +32,7 @@
       >
         {{ message }}
       </h2>
+      <button v-if="lost" v-on:click="reset">Reset</button>
     </div>
     <div class="used-words">
       <h2 class="score">Score: {{ score }}</h2>
@@ -124,6 +125,31 @@ export default {
           } else {
             this.errorMessage = message;
           }
+        });
+    },
+    reset: function() {
+      apiService.resetGame({ playerName: this.playerName })
+        .then((resp) => {
+          if (resp) {
+            this.message = '';
+            this.inputWord = '';
+            this.playedWords = [];
+            this.playerName = '';
+            this.score = 0;
+            this.startGame();
+          } else {
+            this.endGame();
+          }
+        })
+        .catch((error) => {
+          console.error('error', error.message);
+          this.lost = false;
+          this.message = '';
+          this.inputWord = '';
+          this.playedWords = [];
+          this.playerName = '';
+          this.score = 0;
+          this.startGame();
         });
     },
   },
